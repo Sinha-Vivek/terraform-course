@@ -9,12 +9,12 @@ on:
       - '**.tfvars'
       - '.github/workflows/terraform-devops.yml'
   pull_request:
-    branches:  none # [ main ]
+    branches:  [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
 env:
-  STORAGE_ACCOUNT_NAME: storagetfstate013
+  STORAGE_ACCOUNT_NAME: storagetfstate100
   RESOURCE_GROUP_NAME: rg-terraform-state
   CONTAINER_NAME: tfstate
   BLOB_NAME: terraform.tfstate
@@ -62,7 +62,7 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-                
+
     - name: Login to Azure with Service Principal
       uses: Azure/login@v1.4.3
       with:
@@ -76,18 +76,6 @@ jobs:
         # azcliversion: 2.34.1 # optional, default is agentazcliversion
         inlineScript: |
           az version
-
-          # Create resource group
-          az group create --name $RESOURCE_GROUP_NAME --location westeurope
-          
-          # Create storage account
-          az storage account create --name $STORAGE_ACCOUNT_NAME \
-             --resource-group $RESOURCE_GROUP_NAME \
-             --sku Standard_LRS \
-             --encryption-services blob
-          
-          # Create blob container
-          az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
           
           # generate backend.tf file
           cd $WORKING_DIRECTORY
