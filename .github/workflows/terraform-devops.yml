@@ -63,11 +63,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set Azure Subscription
-      run: |
-        echo "Setting subscription to $ARM_SUBSCRIPTION_ID"
-        az account set --subscription ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
     - name: Login to Azure with Service Principal
       uses: Azure/login@v1.4.3
       with:
